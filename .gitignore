@@ -4,7 +4,7 @@
 data/*
 !data/skills_definition.json
 .env
-env
+venv
 .Rhistory
 *.zip
 combine_data.py
