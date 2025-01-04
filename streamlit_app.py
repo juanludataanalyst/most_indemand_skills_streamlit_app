@@ -5,8 +5,29 @@ from streamlit_option_menu import option_menu
 import altair as alt
 import json
 
-# Cargar los datos desde el archivo CSV
-data = pd.read_csv('output_data/skills_data_table.csv')
+import streamlit as st
+import pandas as pd
+import requests
+import io
+
+# ID del archivo en Google Drive (obtido del enlace)
+file_id = '1kzSZfW89LMMoyfAkdUVta0DYzrylPL6k'
+
+# Enlace directo de descarga
+file_url = f"https://drive.google.com/uc?id={file_id}"
+
+# Descargar el archivo CSV desde la URL
+response = requests.get(file_url)
+
+# Verificar que la descarga fue exitosa
+if response.status_code == 200:
+    # Leer el archivo CSV
+    data = pd.read_csv(io.StringIO(response.text))  
+    #st.write(data)  # Mostrar los datos en la aplicación
+else:
+    st.error("Error al descargar el archivo")
+
+
 
 
 
