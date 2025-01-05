@@ -44,20 +44,35 @@ with st.sidebar:
 
 if selected == "Skills by Role":
     st.title("Top Most in Demand Skills")
-    st.write("Select a role: ")
+
+    #st.write("Select a role: ")
+
 
     # Crear un menú desplegable para seleccionar el rol
     roles = data['role'].unique()
     selected_role = st.selectbox("Select a role:", roles)
 
-    # Filtrar los datos según el rol seleccionado
-    df_role = data[data['role'] == selected_role]
+    # Crear un menú desplegable para seleccionar el país, con una opción para seleccionar todos
+    countries = data['country'].unique().tolist()
+    countries.insert(0, 'All')  # Agrega la opción "Todos" al principio
+    selected_country = st.selectbox("Select a country:", countries, index=0)
+
+    # Filtrar los datos basados en la selección
+    if selected_country == 'All':
+        df_filtered = data[data['role'] == selected_role]
+    else:
+        df_filtered = data[(data['role'] == selected_role) & (data['country'] == selected_country)]
 
     # Count the number of unique job IDs
-    total_jobs = df_role['job_id'].nunique()
+    total_jobs = df_filtered['job_id'].nunique()
 
     # Count the occurrences of each skill
-    skill_counts = df_role['skills'].value_counts()
+    skill_counts = df_filtered['skills'].value_counts()
+
+    st.markdown(f"**Total Jobs:** {total_jobs}")
+
+    # Count the occurrences of each skill
+    skill_counts = df_filtered['skills'].value_counts()
 
     # Calculate the percentage of each skill
     skills_percentages = (skill_counts / total_jobs) * 100
