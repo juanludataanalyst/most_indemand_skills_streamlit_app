@@ -1,4 +1,5 @@
 import streamlit as st
+from streamlit_tags import st_tags
 import pandas as pd
 import requests
 import io
@@ -127,7 +128,46 @@ elif selected == "Skills to learn":
 
     association_rules_data["antecedent"] = association_rules_data[["antecedent_1", "antecedent_2"]].fillna("").apply(lambda x: " and ".join(filter(None, x)), axis=1)
 
-    st.dataframe(association_rules_data)
+
+    selected_antecedent = st_tags(
+        label="",
+        text="Choose a skill in which you are a master",
+        value=[],
+        suggestions=list(association_rules_data["antecedent"].unique()),
+        maxtags=1  # Limitar a un solo antecedente
+    )
+
+    if not selected_antecedent:  # Caso inicial: No hay selección
+        st.info("Type a skill to get recommendations")
+    else:
+    # Filtrar los datos para el antecedente seleccionado
+        filtered_data = association_rules_data [association_rules_data ["antecedent"] == selected_antecedent[0]]
+
+        # Mostrar los resultados en texto
+        if not filtered_data.empty:
+            row  = filtered_data.loc[filtered_data["confidence"].idxmax()]
+            st.write(
+    f"""
+    ### Personalized Recommendation for Your Professional Development
+
+    We suggest complement your profile with               **<span style="font-size: 1.8em;">{row['consequent']}</span>**. 
+
+    **Why this recommendation?**
+
+    * **High correlation:** {row['confidence']:.1%} of the time '{row['antecedent']}' appears in a job posting, '{row['consequent']}' also appears.
+    * **Joint frequency:** Both skills, '{row['antecedent']}' and '{row['consequent']}' appear together in {row['support']:.2%} of the analyzed job postings.
+    * **Impact on your employability:** By acquiring the skill of {row['consequent']}, your chances of finding a job that matches your profile will multiply by a factor of {row['lift']:.1f}x
+
+    """, unsafe_allow_html=True
+)
+        else:
+          st.write("No hay datos disponibles para la habilidad seleccionada.")
+
+
+
+
+
+    st.dataframe(association_rules_data.drop('antecedent_1',axis = 1))
 
 elif selected == "JSON Viewer":
     import json  # Asegúrate de importar json para manejar datos JSON
