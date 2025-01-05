@@ -152,9 +152,22 @@ if selected == "Skills by Role":
     # Mostrar gráfica en Streamlit
     st.altair_chart(chart, use_container_width=True)
 
+    print(skills_percentage_df.dtypes)
+    # Formatear los porcentajes a un decimal y añadir el símbolo % directamente en la columna
+    #skills_percentage_df['percentage'] = skills_percentage_df['percentage'].map('{:.1f}%'.format)
 
     # Mostrar la tabla de porcentajes para el rol específico
-    st.dataframe(skills_percentage_df.sort_values(by='percentage', ascending=False), use_container_width=True)
+    #st.dataframe(skills_percentage_df.sort_values(by='percentage', ascending=False), use_container_width=True)
+    # Mostrar la tabla en Streamlit con formato de porcentaje
+
+    skills_percentage_df['percentage'] = skills_percentage_df['percentage']/100
+    skills_percentage_df.columns = ['Skill', 'Percentage']
+    st.dataframe(
+    skills_percentage_df.style.format({'percentage': '{:.1%}'}),  # Formateo a porcentaje
+    use_container_width=True
+    )
+
+
     st.markdown("""
     <style>
     .dataframe th, .dataframe td {
