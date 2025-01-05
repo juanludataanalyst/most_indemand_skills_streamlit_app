@@ -27,8 +27,8 @@ else:
 with st.sidebar:
     selected = option_menu(
         menu_title="Main Menu",
-        options=["Skills by Role", "JSON Viewer", "Contact"],
-        icons=["bar-chart", "folder", "envelope"],
+        options=["Skills by Role", "Skills to learn","JSON Viewer", "Contact"],
+        icons=["bar-chart", "book","folder", "envelope"],
         menu_icon="cast",
         default_index=0,
     )
@@ -77,6 +77,57 @@ if selected == "Skills by Role":
         st.dataframe(skills_percentage.style.format({'percentage': '{:.1f}%'}), use_container_width=True)
     else:
         st.warning("No data available to display.")
+
+
+elif selected == "Skills to learn":
+    import json  # Asegúrate de importar json para manejar datos JSON
+
+    st.title("Skills to learn")
+
+    # Diccionario con roles y IDs de archivos en Google Drive
+    roles_to_files = {
+        "Data Analyst": "1Qp09y7LzPxSxOGNEEWn4zGAypmZQnklh",
+        "Data Scientist": "1s32wd6K9Mony3Mz2KUepsW5dIlKBjYkQ",
+        "Data Engineer" : "16V2DkWiMQwQBLgxdon7Zv3Hpt2g9OZaQ",
+        "Software Engineer" : "1iH47GvvQUXgaC5BcNBwASAJ_WzOmtBOR",
+        "Cybersecurity Engineer" : "1Qp09y7LzPxSxOGNEEWn4zGAypmZQnklh"
+    }
+    selected_role = st.selectbox("Select a role to view JSON:", list(roles_to_files.keys()))
+    file_id = roles_to_files.get(selected_role)
+    
+
+    if file_id:
+        # Descargar y cargar los datos JSON
+        json_data = download_file_from_drive(file_id)
+        if json_data:
+            try:
+                parsed_json = json.loads(json_data)  # Convertir el texto en un objeto JSON
+                #st.json(parsed_json)  # Mostrar JSON formateado en Streamlit
+            except json.JSONDecodeError:
+                st.error("The file is not a valid JSON format.")
+        else:
+            st.error("Could not load JSON data from Google Drive.")
+    else:
+        st.error("File ID not found for the selected role.")
+
+
+
+        # Convertirlo a un DataFrame
+    association_rules_data = pd.DataFrame([
+        {
+            "antecedent_1": rule["antecedents"][0] if len(rule["antecedents"]) > 0 else None,
+            "antecedent_2": rule["antecedents"][1] if len(rule["antecedents"]) > 1 else None,
+            "consequent": rule["consequents"][0],
+            "support": rule["support"],
+            "confidence": rule["confidence"],
+            "lift": rule["lift"]
+        } for rule in parsed_json
+    ])
+
+
+    association_rules_data["antecedent"] = association_rules_data[["antecedent_1", "antecedent_2"]].fillna("").apply(lambda x: " and ".join(filter(None, x)), axis=1)
+
+    st.dataframe(association_rules_data)
 
 elif selected == "JSON Viewer":
     import json  # Asegúrate de importar json para manejar datos JSON
