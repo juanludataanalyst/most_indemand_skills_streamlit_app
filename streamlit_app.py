@@ -93,7 +93,7 @@ elif selected == "Skills to learn":
         "Software Engineer" : "1iH47GvvQUXgaC5BcNBwASAJ_WzOmtBOR",
         "Cybersecurity Engineer" : "1Qp09y7LzPxSxOGNEEWn4zGAypmZQnklh"
     }
-    selected_role = st.selectbox("Select a role to view JSON:", list(roles_to_files.keys()))
+    selected_role = st.selectbox("Select a role ", list(roles_to_files.keys()))
     file_id = roles_to_files.get(selected_role)
     
 
@@ -131,7 +131,7 @@ elif selected == "Skills to learn":
 
     selected_antecedent = st_tags(
         label="",
-        text="Choose a skill in which you are a master",
+        text="Type a skill in which you are a master",
         value=[],
         suggestions=list(association_rules_data["antecedent"].unique()),
         maxtags=1  # Limitar a un solo antecedente
@@ -167,12 +167,13 @@ elif selected == "Skills to learn":
 
 
 
-    st.dataframe(association_rules_data.drop('antecedent_1',axis = 1))
-
+  
 elif selected == "JSON Viewer":
     import json  # Asegúrate de importar json para manejar datos JSON
-
+    
     st.title("JSON Viewer")
+
+    
 
     # Diccionario con roles y IDs de archivos en Google Drive
     roles_to_files = {
@@ -191,7 +192,7 @@ elif selected == "JSON Viewer":
         if json_data:
             try:
                 parsed_json = json.loads(json_data)  # Convertir el texto en un objeto JSON
-                st.json(parsed_json)  # Mostrar JSON formateado en Streamlit
+                
             except json.JSONDecodeError:
                 st.error("The file is not a valid JSON format.")
         else:
@@ -199,6 +200,27 @@ elif selected == "JSON Viewer":
     else:
         st.error("File ID not found for the selected role.")
 
+
+         # Convertirlo a un DataFrame
+    association_rules_data = pd.DataFrame([
+        {
+            "antecedent_1": rule["antecedents"][0] if len(rule["antecedents"]) > 0 else None,
+            "antecedent_2": rule["antecedents"][1] if len(rule["antecedents"]) > 1 else None,
+            "consequent": rule["consequents"][0],
+            "support": rule["support"],
+            "confidence": rule["confidence"],
+            "lift": rule["lift"]
+        } for rule in parsed_json
+    ])
+
+
+    association_rules_data["antecedent"] = association_rules_data[["antecedent_1", "antecedent_2"]].fillna("").apply(lambda x: " and ".join(filter(None, x)), axis=1)
+
+
+
+
+    st.dataframe(association_rules_data.drop(["antecedent_1", "antecedent_2"],axis = 1))
+    st.json(parsed_json)  # Mostrar JSON formateado en Streamlit
 
 elif selected == "Contact":
     st.title("Contact Us")
