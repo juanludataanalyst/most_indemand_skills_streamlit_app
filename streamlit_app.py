@@ -28,7 +28,7 @@ else:
 with st.sidebar:
     selected = option_menu(
         menu_title="Main Menu",
-        options=["Skills by Role", "Skills to learn","JSON Viewer", "Contact"],
+        options=["Skills by Role", "Skills to learn","Raw Data Viewer", "Contact"],
         icons=["bar-chart", "book","folder", "envelope"],
         menu_icon="cast",
         default_index=0,
@@ -128,50 +128,49 @@ elif selected == "Skills to learn":
 
     association_rules_data["antecedent"] = association_rules_data[["antecedent_1", "antecedent_2"]].fillna("").apply(lambda x: " and ".join(filter(None, x)), axis=1)
 
+#selected_antecedent = st.selectbox("Select a skill you master ", list(association_rules_data["antecedent"].unique()))
 
-    selected_antecedent = st_tags(
-        label="",
-        text="Type a skill in which you are a master",
-        value=[],
-        suggestions=list(association_rules_data["antecedent"].unique()),
-        maxtags=1  # Limitar a un solo antecedente
+        # Crear un selectbox para seleccionar una skill (antecedent)
+    selected_antecedent = st.selectbox(
+        "Select a skill in which you are a master",
+        options=[""] + list(association_rules_data["antecedent"].unique())  # Agrega una opción vacía como inicial
     )
 
-    if not selected_antecedent:  # Caso inicial: No hay selección
+    # Si no hay selección (opción inicial)
+    if selected_antecedent == "":
         st.info("Type a skill to get recommendations")
     else:
-    # Filtrar los datos para el antecedente seleccionado
-        filtered_data = association_rules_data [association_rules_data ["antecedent"] == selected_antecedent[0]]
+        # Filtrar los datos para el antecedente seleccionado
+        filtered_data = association_rules_data[association_rules_data["antecedent"] == selected_antecedent]
 
         # Mostrar los resultados en texto
         if not filtered_data.empty:
-            row  = filtered_data.loc[filtered_data["confidence"].idxmax()]
+            # Obtener la fila con el máximo "confidence"
+            row = filtered_data.loc[filtered_data["confidence"].idxmax()]
             st.write(
-    f"""
-    ### Personalized Recommendation for Your Professional Development
+                f"""
+                ### Personalized Recommendation for Your Professional Development
 
-    We suggest complement your profile with               **<span style="font-size: 1.8em;">{row['consequent']}</span>**. 
+                We suggest complement your profile with **<span style="font-size: 1.8em;">{row['consequent']}</span>**. 
 
-    **Why this recommendation?**
+                **Why this recommendation?**
 
-    * **High correlation:** {row['confidence']:.1%} of the time '{row['antecedent']}' appears in a job posting, '{row['consequent']}' also appears.
-    * **Joint frequency:** Both skills, '{row['antecedent']}' and '{row['consequent']}' appear together in {row['support']:.2%} of the analyzed job postings.
-    * **Impact on your employability:** By acquiring the skill of {row['consequent']}, your chances of finding a job that matches your profile will multiply by a factor of {row['lift']:.1f}x
-
-    """, unsafe_allow_html=True
-)
+                * **High correlation:** {row['confidence']:.1%} of the time '{row['antecedent']}' appears in a job posting, '{row['consequent']}' also appears.
+                * **Joint frequency:** Both skills, '{row['antecedent']}' and '{row['consequent']}' appear together in {row['support']:.2%} of the analyzed job postings.
+                * **Impact on your employability:** By acquiring the skill of {row['consequent']}, your chances of finding a job that matches your profile will multiply by a factor of {row['lift']:.1f}x
+                """,
+                unsafe_allow_html=True
+            )
         else:
-          st.write("No hay datos disponibles para la habilidad seleccionada.")
-
-
+            st.write("No data available for the selected skill.")
 
 
 
   
-elif selected == "JSON Viewer":
+elif selected == "Raw Data Viewer":
     import json  # Asegúrate de importar json para manejar datos JSON
     
-    st.title("JSON Viewer")
+    st.title("Raw Data Viewer")
 
     
 
