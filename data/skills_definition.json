@@ -1,300 +1,260 @@
 {
-    "sql": [
+    "SQL": [
         "SQL", "Sql", "sQl", "sqL", "Structured Query Language", "Structured query language", 
-        "structured query language"
+        "structured query language","Transact-SQL", "T-SQL", "t-sql"
     ],
-    "python": [
+    "Python": [
         "Python", "PYTHON", "Py", "py", "Python3", "python 3", "Python 3.x"
     ],
-    "r": [
+    "R": [
         "R", "r", "R Programming", "r programming"
     ],
-    "c": [
+    "C": [
         "C", "c", "C Language", "c language"
     ],
-    "c#": [
+    "C#": [
         "C#", "c#", "C Sharp", "c sharp"
     ],
-    "javascript": [
+    "Javascript": [
         "JavaScript", "javascript", "Java script", "javaScript", "JS", "js", 
         "ECMAScript", "ecmascript"
     ],
         "java": [
         "Java", "java", "Java SE", "java se"
     ],
-    "scala": [
+    "Scala": [
         "Scala", "scala"
     ],
-    "sas": [
+    "SAS": [
         "SAS", "sas", "Statistical Analysis System", "statistical analysis system"
     ],
-    "matlab": [
+    "Matlab": [
         "MATLAB", "matlab", "MATLAB Language", "matlab language"
     ],
-    "c++": [
+    "C++": [
         "C++", "c++", "C Plus Plus", "c plus plus"
     ],
-    "c/c++": [
-        "C/C++", "C / C++", "C and C++", "c/c++", "c and c++"
-    ],
-    "perl": [
+    "Perl": [
         "Perl", "perl"
     ],
-    "typescript": [
+    "Typescript": [
         "TypeScript", "typescript", "TS", "ts"
     ],
-    "bash": [
+    "Bash": [
         "Bash", "bash", "Bourne Again Shell", "bourne again shell"
     ],
    
-    "php": [
+    "PHP": [
         "PHP", "php", "Hypertext Preprocessor", "hypertext preprocessor"
     ],
-    "powershell": [
+    "Powershell": [
         "PowerShell", "powershell", "Windows PowerShell", "windows powershell"
     ],
-    "rust": [
+    "Rust": [
         "Rust", "rust"
     ],
-    "kotlin": [
+    "Kotlin": [
         "Kotlin", "kotlin"
     ],
-    "ruby": [
+    "Ruby": [
         "Ruby", "ruby"
     ],
-    "dart": [
+    "Dart": [
         "Dart", "dart"
     ],
-    "assembly": [
+    "Assembly": [
         "Assembly", "assembly", "Assembly Language", "assembly language"
     ],
-    "swift": [
+    "Swift": [
         "Swift", "swift"
     ],
-    "vba": [
+    "VBA": [
         "VBA", "vba", "Visual Basic for Applications", "visual basic for applications"
     ],
-    "lua": [
+    "Lua": [
         "Lua", "lua"
     ],
-    "groovy": [
+    "Groovy": [
         "Groovy", "groovy"
     ],
-    "delphi": [
+    "Delphi": [
         "Delphi", "delphi"
     ],
-    "objective-c": [
+    "Objective-c": [
         "Objective-C", "objective-c", "Objective C", "objective c"
     ],
-    "haskell": [
+    "Haskell": [
         "Haskell", "haskell"
     ],
-    "elixir": [
+    "Elixir": [
         "Elixir", "elixir"
     ],
-    "julia": [
+    "Julia": [
         "Julia", "julia"
     ],
-    "clojure": [
+    "Clojure": [
         "Clojure", "clojure"
     ],
-    "solidity": [
+    "Solidity": [
         "Solidity", "solidity"
     ],
-    "lisp": [
+    "Sisp": [
         "Lisp", "lisp"
     ],
-    "f#": [
+    "F#": [
         "F#", "f#", "F Sharp", "f sharp"
     ],
-    "fortran": [
+    "Fortran": [
         "Fortran", "fortran"
     ],
-    "erlang": [
+    "Erlang": [
         "Erlang", "erlang"
     ],
-    "apl": [
+    "Apl": [
         "APL", "apl"
     ],
-    "cobol": [
+    "Cobol": [
         "COBOL", "cobol"
     ],
-    "ocaml": [
+    "Ocaml": [
         "OCaml", "ocaml"
     ],
-    "crystal": [
+    "Crystal": [
         "Crystal", "crystal"
     ],
-    "javascript/typescript": [
-        "JavaScript / TypeScript", "javascript / typescript", "JS / TS", 
-        "js / ts", "JavaScript and TypeScript", "javascript and typescript"
-    ],
-    "golang": [
+    "Golang": [
         "Golang", "golang", "Go", "go"
     ],
-    "nosql": [
+    "NoSQL": [
         "NoSQL", "nosql", "No-SQL", "no-sql"
     ],
-    "mongodb": [
+    "MongoDB": [
         "MongoDB", "mongodb"
     ],
-    "t-sql": [
+    "T-SQL": [
         "Transact-SQL", "T-SQL", "t-sql"
     ],
-    "visual_basic": [
+    "Visual Basic": [
         "Visual Basic", "visual basic", "VB", "vb"
     ],
-    "pascal": [
+    "Pascal": [
         "Pascal", "pascal"
     ],
-    "mongo": [
-        "Mongo", "mongo", "MongoDB"
-    ],
-    "pl/sql": [
-        "PL/SQL", "pl/sql"
-    ],
-    "sass": [
+    "Sass": [
         "Sass", "sass"
     ],
-    "vb.net": [
+    "VB.NET": [
         "VB.NET", "vb.net", "Visual Basic .NET", "visual basic .net"
     ],
-    "mssql": [
-        "MSSQL", "mssql", "Microsoft SQL Server", "microsoft sql server"
-    ],
-    "airflow": [
+    "Airflow": [
         "Airflow", "airflow"
     ],
-    "alteryx": [
+    "Alteryx": [
         "Alteryx", "alteryx"
     ],
-    "asp.net": [
+    "ASP.NET": [
         "ASP.NET", "asp.net"
     ],
-    "atlassian": [
+    "Atlassian": [
         "Atlassian", "atlassian"
     ],
-    "excel": [
+    "Excel": [
         "Excel", "excel", "Microsoft Excel", "microsoft excel"
     ],
-    "power_bi": [
+    "Power BI": [
         "Power BI", "power bi"
     ],
-    "tableau": [
+    "Tableau": [
         "Tableau", "tableau"
     ],
-    "srss": [
-        "SRSS", "srss", "SQL Server Reporting Services", "sql server reporting services"
-    ],
-    "word": [
+    "Word": [
         "Word", "word", "Microsoft Word", "microsoft word"
     ],
-    "unix": [
-        "Unix", "unix"
-    ],
-    "vue": [
+    "Vue": [
         "Vue", "vue", "Vue.js", "vue.js"
     ],
-    "jquery": [
+    "Jquery": [
         "jQuery", "jquery"
     ],
-    "linux/unix": [
-        "Linux / Unix", "linux / unix", "Linux and Unix", "linux and unix"
+    "Linux/Unix": [
+        "Linux / Unix", "linux / unix", "Linux and Unix", "linux and unix","Unix", "unix"
     ],
-    "seaborn": [
-        "Seaborn", "seaborn"
-    ],
-    "microstrategy": [
+    "Microstrategy": [
         "MicroStrategy", "microstrategy"
     ],
-    "spss": [
+    "SPSS": [
         "SPSS", "spss"
     ],
-    "visio": [
+    "Visio": [
         "Visio", "visio"
     ],
-    "gdpr": [
+    "GDPR": [
         "GDPR", "gdpr", "General Data Protection Regulation", "general data protection regulation"
     ],
-    "ssrs": [
-        "SSRS", "ssrs", "SQL Server Reporting Services", "sql server reporting services"
-    ],
-    "spreadsheet": [
+    "Spreadsheet": [
         "Spreadsheet", "spreadsheet"
     ],
-    "aws": [
+    "AWS": [
         "AWS", "aws", "Amazon Web Services", "amazon web services"
     ],
-    "azure": [
+    "Azure": [
 	"Azure", "azure", "Microsoft Azure", "microsoft azure"
     ],
-    "google cloud": [
+    "Google Cloud": [
     "Google Cloud", "google cloud", "GCP", "gcp", "Google Cloud Platform", "google cloud platform"
     ],
-    "microsoft fabric": [
+    "Microsoft Fabric": [
     "Microsoft Fabric", "fabric", "Fabric"
     ],
-    "hadoop": [
+    "Hadoop": [
         "Hadoop", "hadoop"
     ],
-    "ssis": [
-        "SSIS", "ssis", "SQL Server Integration Services", "sql server integration services"
-    ],
-    "linux": [
-        "Linux", "linux"
-    ],
-    "sap": [
+    "SAP": [
         "SAP", "sap", "Systems Applications and Products", "systems applications and products"
     ],
-    "powerpoint": [
+    "PowerPoint": [
         "PowerPoint", "powerpoint"
     ],
-    "sharepoint": [
-        "SharePoint", "sharepoint"
-    ],
-    "redshift": [
+    "Redshift": [
         "Redshift", "redshift", "Amazon Redshift", "amazon redshift"
     ],
-    "snowflake": [
+    "Snowflake": [
         "Snowflake", "snowflake"
     ],
-    "qlik": [
+    "Qlik": [
         "Qlik", "qlik"
     ],
-    "cognos": [
+    "Cognos": [
         "Cognos", "cognos"
     ],
-    "pandas": [
+    "Pandas": [
         "Pandas", "pandas"
     ],
-    "spark": [
+    "Apache Spark": [
         "Spark", "spark"
     ],
-    "outlook": [
+    "Outlook": [
         "Outlook", "outlook", "Microsoft Outlook", "microsoft outlook"
     ],
-    "network_security": [
+    "Network Security": [
         "Network Security", "network security"
     ],
-    "encryption": [
+    "Encryption": [
         "Encryption", "encryption"
     ],
-    "penetration_testing": [
+    "Penetration Testing": [
         "Penetration Testing", "penetration testing", "PenTest", "pentest"
     ],
-    "incident_response": [
-        "Incident Response", "incident response"
-    ],
-    "firewalls": [
+    "Firewalls": [
         "Firewalls", "firewall"
     ],
-    "malware_analysis": [
+    "Malware Analysis": [
         "Malware Analysis", "malware analysis"
     ],
-    "vulnerability_management": [
+    "Vulnerability Management": [
         "Vulnerability Management", "vulnerability management"
     ],
-    "security_auditing": [
+    "Security Auditing": [
         "Security Auditing", "security auditing"
     ]
 }
