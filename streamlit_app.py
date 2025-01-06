@@ -56,7 +56,7 @@ if selected == "Skills by Role":
         skills_percentage = (skill_counts / total_jobs * 100).reset_index()
         skills_percentage.columns = ['skill', 'percentage']
         skills_percentage['percentage'] = skills_percentage['percentage'].round(1)
-
+        skills_percentage['percentage'] = skills_percentage['percentage'].astype(float)
         st.markdown(f"**Total Jobs:** {total_jobs}")
 
         # Crear gráfica
@@ -68,8 +68,10 @@ if selected == "Skills by Role":
         )
         text = bars.mark_text(
             align="left", baseline="middle", dx=3, fontSize=14
+        ).transform_calculate(
+            percentage_text="datum.percentage + '%' "  # Agregar el símbolo de porcentaje
         ).encode(
-            text=alt.Text("percentage:Q", format=".1f")
+            text=alt.Text("percentage_text:N")  # Usar la columna calculada
         )
         st.altair_chart((bars + text).properties(width=800, height=500))
 
@@ -77,6 +79,7 @@ if selected == "Skills by Role":
         st.dataframe(skills_percentage.style.format({'percentage': '{:.1f}%'}), use_container_width=True)
     else:
         st.warning("No data available to display.")
+
 
 
 elif selected == "Skills to learn":
@@ -137,7 +140,7 @@ elif selected == "Skills to learn":
 
     # Si no hay selección (opción inicial)
     if selected_antecedent == "":
-        st.info("Type a skill to get recommendations")
+        st.info("Select one to get your next skill to learn")
     else:
         # Filtrar los datos para el antecedente seleccionado
         filtered_data = association_rules_data[association_rules_data["antecedent"] == selected_antecedent]
@@ -147,19 +150,18 @@ elif selected == "Skills to learn":
             # Obtener la fila con el máximo "confidence"
             row = filtered_data.loc[filtered_data["confidence"].idxmax()]
             st.write(
-                f"""
-                ### Personalized Recommendation for Your Professional Development
+    f"""
+    ### Recommended Skill to Learn ->   <span style="text-align: right; font-size: 1.5em;"> { row['consequent'] } </span> 
 
-                We suggest complement your profile with **<span style="font-size: 1.8em;">{row['consequent']}</span>**. 
+    **Why this recommendation?**
 
-                **Why this recommendation?**
+    * **High correlation:** **{row['confidence']:.1%}** of the time **{row['antecedent']}** appears in a job posting, **{row['consequent']}** also appears.
 
-                * **High correlation:** {row['confidence']:.1%} of the time '{row['antecedent']}' appears in a job posting, '{row['consequent']}' also appears.
-                * **Joint frequency:** Both skills, '{row['antecedent']}' and '{row['consequent']}' appear together in {row['support']:.2%} of the analyzed job postings.
-                * **Impact on your employability:** By acquiring the skill of {row['consequent']}, your chances of finding a job that matches your profile will multiply by a factor of {row['lift']:.1f}x
-                """,
-                unsafe_allow_html=True
-            )
+    * **Joint frequency:** Both skills appear together in **{row['support']:.2%}** of the analyzed job postings.
+    * **Impact on your employability:** By acquiring this skill your chances of finding a job that matches your profile will multiply by a factor of **{row['lift']:.1f}x**
+    """,
+    unsafe_allow_html=True
+)
         else:
             st.write("No data available for the selected skill.")
 
@@ -223,3 +225,4 @@ elif selected == "Raw Data Viewer":
 elif selected == "Contact":
     st.title("Contact Us")
     st.write("For inquiries, please reach out via email.")
+    st.write("juanludataanalyst@gmail.com")
