@@ -1,4 +1,5 @@
 # Most In-Demand Skills Streamlit App
+![imagen](https://github.com/user-attachments/assets/9ae51bd3-a912-4262-b765-24cef23d4a08)
 
 ## Overview
 
@@ -9,7 +10,6 @@
 
 The application processes job data to recommend skills that users should learn to enhance their career opportunities.
 
-![imagen](https://github.com/user-attachments/assets/9ae51bd3-a912-4262-b765-24cef23d4a08)
 
 
 ## ⭐ Key Features
