@@ -60,3 +60,6 @@ skills_groups.py
 create_json_rules.py
 create_json_rules_simple.py
 apriori.py
+jobicy.py
+arbeitnow.py
+remoteok_api_data.py
