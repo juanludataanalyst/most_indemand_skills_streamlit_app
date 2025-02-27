@@ -3,6 +3,7 @@ import re
 import os
 import hashlib
 from bs4 import BeautifulSoup
+from datetime import datetime
 
 # Cargar diccionario de tecnologías
 with open('data/skills_definition.json', 'r') as f:
@@ -17,19 +18,15 @@ def generate_job_id(description):
     return hashlib.md5(description.encode('utf-8')).hexdigest()
 
 def clean_html(html_text):
-    """Limpia etiquetas HTML y devuelve texto plano."""
     soup = BeautifulSoup(html_text, 'html.parser')
     return soup.get_text()
 
 def extract_technologies(description):
-    """Extrae tecnologías solo del description."""
     found_technologies = set()
     cleaned_description = clean_html(description) if description else ""
-    
     for key, pattern in patterns.items():
         if pattern.search(cleaned_description):
             found_technologies.add(key)
-    
     return list(found_technologies)
 
 # Procesadores por fuente
@@ -91,12 +88,12 @@ def process_source_remoteok(job, subdir_date):
     company = job.get("company", "")
     description = job.get("description", "")
     salary = f"${job.get('salary_min', 'No especificado')}-{job.get('salary_max', 'No especificado')}" if job.get('salary_min') else "No especificado"
-    employment_type = "No especificado"  # RemoteOK no proporciona este dato explícitamente
+    employment_type = "No especificado"
     tags = job.get("tags", [])
     technologies = extract_technologies(description)
     job_id = generate_job_id(description)
     location = job.get("location", "Ubicación no especificada")
-    role = next((tag for tag in tags if tag in ["design", "sales", "qa", "devops", "crypto"]), title.split()[0])  # Inferir rol desde tags o título
+    role = next((tag for tag in tags if tag in ["design", "sales", "qa", "devops", "crypto"]), title.split()[0])
     date = job.get("date", subdir_date).split('T')[0]
     country = location if any(c in location.lower() for c in ["colombia", "india", "us"]) else location
 
@@ -107,6 +104,43 @@ def process_source_remoteok(job, subdir_date):
         "location": location,
         "skills": technologies,
         "tags": tags,
+        "salary": salary,
+        "employment_type": employment_type,
+        "date": date,
+        "country": country,
+        "role": role
+    }
+
+def process_source_weworkremotely(job, subdir_date):
+    title_full = job.get("title", "")
+    # Extraer compañía y título del title
+    if ': ' in title_full:
+        company, title = title_full.split(': ', 1)
+    else:
+        company = "Empresa no especificada"
+        title = title_full
+    description = job.get("description", "")
+    salary = "No especificado"  # Podemos extraerlo de description si quieres
+    employment_type = job.get("type", "No especificado")
+    technologies = extract_technologies(description)
+    job_id = generate_job_id(description)
+    location = job.get("region", "Ubicación no especificada")
+    role = job.get("category", "Rol no especificado")
+    date = job.get("pubDate", subdir_date)
+    try:
+        date_obj = datetime.strptime(date, "%a, %d %b %Y %H:%M:%S %z")
+        date = date_obj.strftime("%Y-%m-%d")
+    except ValueError:
+        date = subdir_date
+    country = location if any(c in location.lower() for c in ["colombia", "india", "us"]) else location
+
+    return {
+        "job_id": job_id,
+        "title": title,
+        "company": company,
+        "location": location,
+        "skills": technologies,
+        "tags": [],
         "salary": salary,
         "employment_type": employment_type,
         "date": date,
@@ -129,7 +163,6 @@ def process_json_files(directory):
                 except ValueError:
                     print(f"Subdirectorio {subdir} en indeed no sigue el formato esperado (date_country_role). Omitiendo.")
                     continue
-                
                 for file_name in os.listdir(subdir_path):
                     if file_name.endswith('.json'):
                         file_path = os.path.join(subdir_path, file_name)
@@ -173,8 +206,25 @@ def process_json_files(directory):
                     print(f"Error con {file_path}: {e}")
                     continue
                 subdir_date = file_name.split('_')[0]
-                for job in data:  # RemoteOK es una lista directa
+                for job in data:
                     processed_job = process_source_remoteok(job, subdir_date)
+                    processed_data.append(processed_job)
+
+    # Procesar We Work Remotely
+    wwr_path = os.path.join(directory, 'weworkremotely')
+    if os.path.exists(wwr_path):
+        for file_name in os.listdir(wwr_path):
+            if file_name.endswith('.json'):
+                file_path = os.path.join(wwr_path, file_name)
+                try:
+                    with open(file_path, 'r', encoding='utf-8') as f:
+                        data = json.load(f)
+                except (FileNotFoundError, json.JSONDecodeError) as e:
+                    print(f"Error con {file_path}: {e}")
+                    continue
+                subdir_date = file_name.split('_')[0]
+                for job in data:
+                    processed_job = process_source_weworkremotely(job, subdir_date)
                     processed_data.append(processed_job)
 
     return processed_data
