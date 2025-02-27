@@ -50,7 +50,7 @@ def process_source_indeed(job, date, country, role):
         "company": company_cleaned,
         "location": location,
         "skills": technologies,
-        "tags": [],  # Campo vacío para Indeed
+        "tags": [],
         "salary": salary,
         "employment_type": employment_type,
         "date": date,
@@ -69,7 +69,7 @@ def process_source_remotive(job, subdir_date):
     job_id = generate_job_id(description)
     location = job.get("candidate_required_location", "Ubicación no especificada")
     role = job.get("category", "Rol no especificado")
-    date = job.get("publication_date", subdir_date).split('T')[0]  # Solo la fecha, ej. "2025-01-14"
+    date = job.get("publication_date", subdir_date).split('T')[0]
     country = location if any(c in location.lower() for c in ["colombia", "india", "us"]) else location
 
     return {
@@ -78,7 +78,35 @@ def process_source_remotive(job, subdir_date):
         "company": company,
         "location": location,
         "skills": technologies,
-        "tags": tags,  # Tags como campo separado
+        "tags": tags,
+        "salary": salary,
+        "employment_type": employment_type,
+        "date": date,
+        "country": country,
+        "role": role
+    }
+
+def process_source_remoteok(job, subdir_date):
+    title = job.get("position", "")
+    company = job.get("company", "")
+    description = job.get("description", "")
+    salary = f"${job.get('salary_min', 'No especificado')}-{job.get('salary_max', 'No especificado')}" if job.get('salary_min') else "No especificado"
+    employment_type = "No especificado"  # RemoteOK no proporciona este dato explícitamente
+    tags = job.get("tags", [])
+    technologies = extract_technologies(description)
+    job_id = generate_job_id(description)
+    location = job.get("location", "Ubicación no especificada")
+    role = next((tag for tag in tags if tag in ["design", "sales", "qa", "devops", "crypto"]), title.split()[0])  # Inferir rol desde tags o título
+    date = job.get("date", subdir_date).split('T')[0]
+    country = location if any(c in location.lower() for c in ["colombia", "india", "us"]) else location
+
+    return {
+        "job_id": job_id,
+        "title": title,
+        "company": company,
+        "location": location,
+        "skills": technologies,
+        "tags": tags,
         "salary": salary,
         "employment_type": employment_type,
         "date": date,
@@ -111,9 +139,7 @@ def process_json_files(directory):
                         except (FileNotFoundError, json.JSONDecodeError) as e:
                             print(f"Error con {file_path}: {e}")
                             continue
-
-                        # Procesar como Indeed
-                        for job in data:  # Indeed asume lista directa
+                        for job in data:
                             processed_job = process_source_indeed(job, date, country, role)
                             processed_data.append(processed_job)
 
@@ -129,17 +155,26 @@ def process_json_files(directory):
                 except (FileNotFoundError, json.JSONDecodeError) as e:
                     print(f"Error con {file_path}: {e}")
                     continue
-
-                # Extraer fecha del nombre del archivo como fallback
-                try:
-                    subdir_date = file_name.split('_')[0]  # Ej. "2025-02-26" de "2025-02-26_remotive_jobs.json"
-                except IndexError:
-                    print(f"Nombre de archivo {file_name} en remotive no sigue el formato esperado. Usando fecha por defecto.")
-                    subdir_date = "unknown"
-
-                # Procesar como Remotive
-                for job in data.get("jobs", []):  # Remotive usa "jobs"
+                subdir_date = file_name.split('_')[0]
+                for job in data.get("jobs", []):
                     processed_job = process_source_remotive(job, subdir_date)
+                    processed_data.append(processed_job)
+
+    # Procesar RemoteOK
+    remoteok_path = os.path.join(directory, 'remoteok')
+    if os.path.exists(remoteok_path):
+        for file_name in os.listdir(remoteok_path):
+            if file_name.endswith('.json'):
+                file_path = os.path.join(remoteok_path, file_name)
+                try:
+                    with open(file_path, 'r', encoding='utf-8') as f:
+                        data = json.load(f)
+                except (FileNotFoundError, json.JSONDecodeError) as e:
+                    print(f"Error con {file_path}: {e}")
+                    continue
+                subdir_date = file_name.split('_')[0]
+                for job in data:  # RemoteOK es una lista directa
+                    processed_job = process_source_remoteok(job, subdir_date)
                     processed_data.append(processed_job)
 
     return processed_data
