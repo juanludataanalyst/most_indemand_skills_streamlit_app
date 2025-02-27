@@ -62,3 +62,4 @@ create_json_rules_simple.py
 apriori.py
 jobicy.py
 arbeitnow.py
+remotive_feed_data.py

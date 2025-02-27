@@ -51,7 +51,8 @@ def process_source_indeed(job, date, country, role):
         "employment_type": employment_type,
         "date": date,
         "country": country,
-        "role": role
+        "role": role,
+        "source": "indeed"  # Añadido
     }
 
 def process_source_remotive(job, subdir_date):
@@ -79,7 +80,8 @@ def process_source_remotive(job, subdir_date):
         "employment_type": employment_type,
         "date": date,
         "country": country,
-        "role": role
+        "role": role,
+        "source": "remotive"  # Añadido
     }
 
 def process_source_remoteok(job, subdir_date):
@@ -107,7 +109,8 @@ def process_source_remoteok(job, subdir_date):
         "employment_type": employment_type,
         "date": date,
         "country": country,
-        "role": role
+        "role": role,
+        "source": "remoteok"  # Añadido
     }
 
 def process_source_weworkremotely(job, subdir_date):
@@ -143,19 +146,20 @@ def process_source_weworkremotely(job, subdir_date):
         "employment_type": employment_type,
         "date": date,
         "country": country,
-        "role": role
+        "role": role,
+        "source": "weworkremotely"  # Añadido
     }
 
 def process_source_jobicy(job, subdir_date):
     title = job.get("name", "").replace("Remote ", "", 1) if job.get("name", "").startswith("Remote ") else job.get("name", "")
     company = job.get("company", "Empresa no especificada")
     description = job.get("description", "")
-    salary = "No especificado"  # Extraído opcionalmente de description
+    salary = "No especificado"
     employment_type = job.get("jobtype", "No especificado").replace("-", " ").title()
     technologies = extract_technologies(description)
     job_id = generate_job_id(description)
     location = job.get("region", "Ubicación no especificada")
-    role = "Desconocido"  # Como pediste, lo dejamos así por ahora
+    role = "Desconocido"
     date = job.get("pubdate", subdir_date)
     try:
         date_obj = datetime.strptime(date, "%d.%m.%Y")
@@ -185,7 +189,8 @@ def process_source_jobicy(job, subdir_date):
         "employment_type": employment_type,
         "date": date,
         "country": country,
-        "role": role
+        "role": role,
+        "source": "jobicy"  # Añadido
     }
 
 # Función principal para procesar archivos
