@@ -9,7 +9,6 @@ from datetime import datetime
 with open('data/skills_definition.json', 'r') as f:
     skills = json.load(f)
 
-# Compilar patrones de tecnologías una vez
 patterns = {key: re.compile(r'\b(' + '|'.join(map(re.escape, variations)) + r')\b', re.IGNORECASE) 
             for key, variations in skills.items()}
 
@@ -113,14 +112,13 @@ def process_source_remoteok(job, subdir_date):
 
 def process_source_weworkremotely(job, subdir_date):
     title_full = job.get("title", "")
-    # Extraer compañía y título del title
     if ': ' in title_full:
         company, title = title_full.split(': ', 1)
     else:
         company = "Empresa no especificada"
         title = title_full
     description = job.get("description", "")
-    salary = "No especificado"  # Podemos extraerlo de description si quieres
+    salary = "No especificado"
     employment_type = job.get("type", "No especificado")
     technologies = extract_technologies(description)
     job_id = generate_job_id(description)
@@ -133,6 +131,48 @@ def process_source_weworkremotely(job, subdir_date):
     except ValueError:
         date = subdir_date
     country = location if any(c in location.lower() for c in ["colombia", "india", "us"]) else location
+
+    return {
+        "job_id": job_id,
+        "title": title,
+        "company": company,
+        "location": location,
+        "skills": technologies,
+        "tags": [],
+        "salary": salary,
+        "employment_type": employment_type,
+        "date": date,
+        "country": country,
+        "role": role
+    }
+
+def process_source_jobicy(job, subdir_date):
+    title = job.get("name", "").replace("Remote ", "", 1) if job.get("name", "").startswith("Remote ") else job.get("name", "")
+    company = job.get("company", "Empresa no especificada")
+    description = job.get("description", "")
+    salary = "No especificado"  # Extraído opcionalmente de description
+    employment_type = job.get("jobtype", "No especificado").replace("-", " ").title()
+    technologies = extract_technologies(description)
+    job_id = generate_job_id(description)
+    location = job.get("region", "Ubicación no especificada")
+    role = "Desconocido"  # Como pediste, lo dejamos así por ahora
+    date = job.get("pubdate", subdir_date)
+    try:
+        date_obj = datetime.strptime(date, "%d.%m.%Y")
+        date = date_obj.strftime("%Y-%m-%d")
+    except ValueError:
+        date = subdir_date
+    country = location if any(c in location.lower() for c in ["colombia", "india", "us"]) else location
+
+    # Extracción opcional de salary
+    if "salary for this role is between" in description.lower():
+        salary_start = description.lower().find("salary for this role is between")
+        salary_text = description[salary_start:salary_start+100]
+        salary = salary_text.split("plus")[0].strip().replace("salary for this role is between ", "")
+    elif "$" in description:
+        salary_match = re.search(r'\$[\d,]+(?:\s*[-–]\s*\$[\d,]+)?', description)
+        if salary_match:
+            salary = salary_match.group(0)
 
     return {
         "job_id": job_id,
@@ -225,6 +265,23 @@ def process_json_files(directory):
                 subdir_date = file_name.split('_')[0]
                 for job in data:
                     processed_job = process_source_weworkremotely(job, subdir_date)
+                    processed_data.append(processed_job)
+
+    # Procesar Jobicy
+    jobicy_path = os.path.join(directory, 'jobicy')
+    if os.path.exists(jobicy_path):
+        for file_name in os.listdir(jobicy_path):
+            if file_name.endswith('.json'):
+                file_path = os.path.join(jobicy_path, file_name)
+                try:
+                    with open(file_path, 'r', encoding='utf-8') as f:
+                        data = json.load(f)
+                except (FileNotFoundError, json.JSONDecodeError) as e:
+                    print(f"Error con {file_path}: {e}")
+                    continue
+                subdir_date = file_name.split('_')[0]
+                for job in data:
+                    processed_job = process_source_jobicy(job, subdir_date)
                     processed_data.append(processed_job)
 
     return processed_data
