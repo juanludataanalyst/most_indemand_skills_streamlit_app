@@ -52,12 +52,13 @@ def process_source_indeed(job, date, country, role):
         "date": date,
         "country": country,
         "role": role,
-        "source": "indeed"  # Añadido
+        "source": "indeed"
     }
 
-def process_source_remotive(job, subdir_date):
+# Procesador para datos históricos de la API de Remotive
+def process_source_remotive_historic(job, subdir_date):
     title = job.get("title", "")
-    company = job.get("company_name", "")
+    company = job.get("company_name", "Empresa no especificada")
     description = job.get("description", "")
     salary = job.get("salary", "No especificado") or "No especificado"
     employment_type = job.get("job_type", "No especificado").replace("_", " ").title()
@@ -81,7 +82,41 @@ def process_source_remotive(job, subdir_date):
         "date": date,
         "country": country,
         "role": role,
-        "source": "remotive"  # Añadido
+        "source": "remotive"
+    }
+
+# Procesador para el feed RSS de Remotive
+def process_source_remotive(job, subdir_date):
+    title = job.get("title", "")
+    company = job.get("company", "Empresa no especificada")
+    description = job.get("description", "")
+    salary = "No especificado"
+    employment_type = job.get("type", "No especificado").replace("_", " ").title()
+    technologies = extract_technologies(description)
+    job_id = job.get("id", generate_job_id(description))
+    location = job.get("location", "Ubicación no especificada")
+    role = job.get("category", "Desconocido")
+    date = job.get("pubDate", subdir_date)
+    try:
+        date_obj = datetime.strptime(date, "%a, %d %b %Y %H:%M:%S %z")
+        date = date_obj.strftime("%Y-%m-%d")
+    except ValueError:
+        date = subdir_date
+    country = location if any(c in location.lower() for c in ["colombia", "india", "us"]) else location
+
+    return {
+        "job_id": str(job_id),
+        "title": title,
+        "company": company,
+        "location": location,
+        "skills": technologies,
+        "tags": [],
+        "salary": salary,
+        "employment_type": employment_type,
+        "date": date,
+        "country": country,
+        "role": role,
+        "source": "remotive"
     }
 
 def process_source_remoteok(job, subdir_date):
@@ -110,7 +145,7 @@ def process_source_remoteok(job, subdir_date):
         "date": date,
         "country": country,
         "role": role,
-        "source": "remoteok"  # Añadido
+        "source": "remoteok"
     }
 
 def process_source_weworkremotely(job, subdir_date):
@@ -147,7 +182,7 @@ def process_source_weworkremotely(job, subdir_date):
         "date": date,
         "country": country,
         "role": role,
-        "source": "weworkremotely"  # Añadido
+        "source": "weworkremotely"
     }
 
 def process_source_jobicy(job, subdir_date):
@@ -168,7 +203,6 @@ def process_source_jobicy(job, subdir_date):
         date = subdir_date
     country = location if any(c in location.lower() for c in ["colombia", "india", "us"]) else location
 
-    # Extracción opcional de salary
     if "salary for this role is between" in description.lower():
         salary_start = description.lower().find("salary for this role is between")
         salary_text = description[salary_start:salary_start+100]
@@ -190,7 +224,7 @@ def process_source_jobicy(job, subdir_date):
         "date": date,
         "country": country,
         "role": role,
-        "source": "jobicy"  # Añadido
+        "source": "jobicy"
     }
 
 # Función principal para procesar archivos
@@ -221,7 +255,27 @@ def process_json_files(directory):
                             processed_job = process_source_indeed(job, date, country, role)
                             processed_data.append(processed_job)
 
-    # Procesar Remotive
+    # Procesar Remotive histórico (API)
+    remotive_historic_path = os.path.join(directory, 'remotive_historic')
+    if os.path.exists(remotive_historic_path):
+        for file_name in os.listdir(remotive_historic_path):
+            if file_name.endswith('.json'):
+                file_path = os.path.join(remotive_historic_path, file_name)
+                try:
+                    with open(file_path, 'r', encoding='utf-8') as f:
+                        data = json.load(f)
+                except (FileNotFoundError, json.JSONDecodeError) as e:
+                    print(f"Error con {file_path}: {e}")
+                    continue
+                subdir_date = file_name.split('_')[0]
+                if isinstance(data, dict) and "jobs" in data:
+                    for job in data["jobs"]:
+                        processed_job = process_source_remotive_historic(job, subdir_date)
+                        processed_data.append(processed_job)
+                else:
+                    print(f"Formato inesperado en {file_path}. Omitiendo archivo histórico.")
+
+    # Procesar Remotive feed (RSS)
     remotive_path = os.path.join(directory, 'remotive')
     if os.path.exists(remotive_path):
         for file_name in os.listdir(remotive_path):
@@ -234,7 +288,7 @@ def process_json_files(directory):
                     print(f"Error con {file_path}: {e}")
                     continue
                 subdir_date = file_name.split('_')[0]
-                for job in data.get("jobs", []):
+                for job in data:  # RSS es una lista directa
                     processed_job = process_source_remotive(job, subdir_date)
                     processed_data.append(processed_job)
 
