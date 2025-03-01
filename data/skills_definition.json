@@ -19,7 +19,7 @@
         "JavaScript", "javascript", "Java script", "javaScript", "JS", "js", 
         "ECMAScript", "ecmascript"
     ],
-        "java": [
+    "Java": [
         "Java", "java", "Java SE", "java se"
     ],
     "Scala": [
@@ -123,7 +123,7 @@
         "Crystal", "crystal"
     ],
     "Golang": [
-        "Golang", "golang", "Go", "go"
+        "Golang", "golang"
     ],
     "NoSQL": [
         "NoSQL", "nosql", "No-SQL", "no-sql"
@@ -256,5 +256,144 @@
     ],
     "Security Auditing": [
         "Security Auditing", "security auditing"
+    ],
+"Customer Service": [
+        "Customer Service", "customer service", "Client Support", "client support", "Customer Care", "customer care"
+    ],
+    "Technical Support": [
+        "Technical Support", "technical support", "Tech Support", "tech support", "IT Support", "it support"
+    ],
+    "Help Desk": [
+        "Help Desk", "help desk", "Service Desk", "service desk", "Support Desk", "support desk"
+    ],
+    "CRM": [
+        "CRM", "crm", "Customer Relationship Management", "customer relationship management", "CRM Software", "crm software"
+    ],
+    "Zendesk": [
+        "Zendesk", "zendesk"
+    ],
+    "Live Chat": [
+        "Live Chat", "live chat", "Chat Support", "chat support", "Online Support", "online support"
+    ],
+    "Graphic Design": [
+        "Graphic Design", "graphic design", "Visual Design", "visual design", "Digital Design", "digital design"
+    ],
+    "UI/UX": [
+        "UI/UX", "ui/ux", "User Interface Design", "user interface design", "User Experience Design", "user experience design"
+    ],
+    "Adobe Suite": [
+        "Adobe Suite", "adobe suite", "Adobe Creative Cloud", "adobe creative cloud"
+    ],
+    "Wireframing": [
+        "Wireframing", "wireframing", "Prototyping", "prototyping"
+    ],
+    "CI/CD": [
+        "CI/CD", "ci/cd", "Continuous Integration", "continuous integration", "Continuous Deployment", "continuous deployment"
+    ],
+    "Cloud Computing": [
+        "Cloud Computing", "cloud computing", "Cloud Infrastructure", "cloud infrastructure"
+    ],
+    "GitOps": [
+        "GitOps", "gitops"
+    ],
+    "Financial Analysis": [
+        "Financial Analysis", "financial analysis", "Finance Modeling", "finance modeling"
+    ],
+    "Accounting": [
+        "Accounting", "accounting", "Bookkeeping", "bookkeeping", "Financial Accounting", "financial accounting"
+    ],
+    "QuickBooks": [
+        "QuickBooks", "quickbooks"
+    ],
+    "SAP Finance": [
+        "SAP Finance", "sap finance"
+    ],
+    "Payroll Management": [
+        "Payroll Management", "payroll management", "Payroll Processing", "payroll processing"
+    ],
+    "HR Software": [
+        "HR Software", "hr software", "HRIS", "hris", "Human Resources Information System", "human resources information system"
+    ],
+    "Employee Relations": [
+        "Employee Relations", "employee relations", "Workplace Relations", "workplace relations"
+    ],
+    "Performance Management": [
+        "Performance Management", "performance management", "Employee Performance", "employee performance"
+    ],
+    "Digital Marketing": [
+        "Digital Marketing", "digital marketing", "Online Marketing", "online marketing"
+    ],
+    "Social Media Marketing": [
+        "Social Media Marketing", "social media marketing", "SMM", "smm"
+    ],
+    "Google Ads": [
+        "Google Ads", "google ads", "Google AdWords", "google adwords"
+    ],
+    "Content Marketing": [
+        "Content Marketing", "content marketing", "Content Strategy", "content strategy"
+    ],
+    "Product Roadmap": [
+        "Product Roadmap", "product roadmap", "Roadmapping", "roadmapping"
+    ],
+    "Stakeholder Management": [
+        "Stakeholder Management", "stakeholder management", "Stakeholder Communication", "stakeholder communication"
+    ],
+    "MVP Development": [
+        "MVP Development", "mvp development", "Minimum Viable Product", "minimum viable product"
+    ],
+    "A/B Testing": [
+        "A/B Testing", "a/b testing", "Split Testing", "split testing"
+    ],
+    "Test Automation": [
+        "Test Automation", "test automation", "Automated Testing", "automated testing"
+    ],
+    "Unit Testing": [
+        "Unit Testing", "unit testing"
+    ],
+    "Integration Testing": [
+        "Integration Testing", "integration testing"
+    ],
+    "Performance Testing": [
+        "Performance Testing", "performance testing", "Load Testing", "load testing"
+    ],
+    "Manual Testing": [
+        "Manual Testing", "manual testing", "Exploratory Testing", "exploratory testing"
+    ],
+    "Bug Tracking": [
+        "Bug Tracking", "bug tracking", "Issue Tracking", "issue tracking"
+    ],
+    "Lead Generation": [
+        "Lead Generation", "lead generation", "Prospecting", "prospecting"
+    ],
+    "Cold Calling": [
+        "Cold Calling", "cold calling", "Outbound Sales", "outbound sales"
+    ],
+    "Negotiation": [
+        "Negotiation", "negotiation", "Sales Negotiation", "sales negotiation"
+    ],
+    "Account Management": [
+        "Account Management", "account management", "Client Management", "client management"
+    ],
+    "B2B Sales": [
+        "B2B Sales", "b2b sales", "Business-to-Business Sales", "business-to-business sales"
+    ],
+    "Pipeline Management": [
+        "Pipeline Management", "pipeline management", "Sales Pipeline", "sales pipeline"
+    ],
+    "Copywriting": [
+        "Copywriting", "copywriting", "Sales Copywriting", "sales copywriting"
+    ],
+    "Technical Writing": [
+        "Technical Writing", "technical writing", "Documentation Writing", "documentation writing"
+    ],
+    "SEO Writing": [
+        "SEO Writing", "seo writing", "Search Engine Optimized Content", "search engine optimized content"
+    ],
+    "Editing": [
+        "Editing", "editing", "Proofreading", "proofreading"
+    ],
+    "Creative Writing": [
+        "Creative Writing", "creative writing", "Storytelling", "storytelling"
     ]
+
 }
