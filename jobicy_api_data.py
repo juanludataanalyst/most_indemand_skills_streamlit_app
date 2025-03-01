@@ -47,7 +47,6 @@ def get_jobicy_jobs():
         ("remote_devops_and_infrastructure_jobs", "admin"),  # Corregido de devops-sysadmin
         ("remote_finance_and_accounting_jobs", "accounting-finance"),
         ("remote_hr_and_recruiting_jobs", "hr"),
-        ("remote_legal_and_compliance_jobs", "legal"),  # Añadido
         ("remote_marketing_and_sales_jobs", "marketing"),
         ("remote_product_and_operations_jobs", "management"),
         ("remote_programming_jobs", "dev"),

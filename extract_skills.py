@@ -183,7 +183,7 @@ def process_source_weworkremotely(job, subdir_date):
         "source": "weworkremotely"
     }
 
-def process_source_jobicy(job, subdir_date):
+def process_source_jobicy(job, subdir_date, category_from_file=None):
     title = job.get("jobTitle", "").replace("Remote ", "", 1) if job.get("jobTitle", "").startswith("Remote ") else job.get("jobTitle", "")
     company = job.get("companyName", "Empresa no especificada")
     description = job.get("jobDescription", "")
@@ -192,9 +192,9 @@ def process_source_jobicy(job, subdir_date):
         salary = f"{job['salaryCurrency']} {job['annualSalaryMin']} - {job['annualSalaryMax']}"
     employment_type = job.get("jobType", ["No especificado"])[0].replace("-", " ").title()
     technologies = extract_technologies(description)
-    job_id = str(job.get("id", generate_job_id(description)))  # Usar ID de la API si existe
+    job_id = str(job.get("id", generate_job_id(description)))
     location = job.get("jobGeo", "Ubicación no especificada")
-    role = "Desconocido"  # Jobicy API no proporciona category directamente, lo inferimos del título
+    role = category_from_file if category_from_file else "Desconocido"  # Usar categoría del archivo
     date = job.get("pubDate", subdir_date)
     try:
         date_obj = datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
@@ -202,29 +202,6 @@ def process_source_jobicy(job, subdir_date):
     except ValueError:
         date = subdir_date
     country = location if any(c in location.lower() for c in ["colombia", "india", "us"]) else location
-
-    # Inferir rol del título
-    title_lower = title.lower()
-    if "analyst" in title_lower or "data" in title_lower:
-        role = "Data Science"
-    elif "engineer" in title_lower or "devops" in title_lower:
-        role = "DevOps Engineer"
-    elif "developer" in title_lower or "software" in title_lower or "programmer" in title_lower:
-        role = "Software Developer"
-    elif "design" in title_lower or "ux" in title_lower or "ui" in title_lower:
-        role = "Designer"
-    elif "qa" in title_lower or "quality" in title_lower:
-        role = "QA Engineer"
-    elif "manager" in title_lower or "project" in title_lower:
-        role = "Product Manager"
-    elif "support" in title_lower or "customer" in title_lower:
-        role = "Customer Support"
-    elif "marketing" in title_lower or "sales" in title_lower:
-        role = "Sales"
-    elif "writer" in title_lower or "content" in title_lower:
-        role = "Writer"
-    else:
-        role = "Other"
 
     return {
         "job_id": job_id,
@@ -241,7 +218,6 @@ def process_source_jobicy(job, subdir_date):
         "source": "jobicy"
     }
 
-# Función principal para procesar archivos
 def process_json_files(directory):
     processed_data = []
     
@@ -302,7 +278,7 @@ def process_json_files(directory):
                     print(f"Error con {file_path}: {e}")
                     continue
                 subdir_date = file_name.split('_')[0]
-                for job in data:  # RSS es una lista directa
+                for job in data:
                     processed_job = process_source_remotive(job, subdir_date)
                     processed_data.append(processed_job)
 
@@ -340,7 +316,7 @@ def process_json_files(directory):
                     processed_job = process_source_weworkremotely(job, subdir_date)
                     processed_data.append(processed_job)
 
-    # Procesar Jobicy (actualizado para API)
+    # Procesar Jobicy (actualizado para API con categorías desde el nombre del archivo)
     jobicy_path = os.path.join(directory, 'jobicy')
     if os.path.exists(jobicy_path):
         for file_name in os.listdir(jobicy_path):
@@ -353,10 +329,11 @@ def process_json_files(directory):
                     print(f"Error con {file_path}: {e}")
                     continue
                 subdir_date = file_name.split('_')[0]
-                # La API devuelve un objeto con "jobs"
+                # Extraer la categoría del nombre del archivo (ej. "remote_data_science_and_analytics_jobs")
+                category_part = file_name.split('jobicy_jobs_')[1].replace('.json', '')
                 job_list = data.get("jobs", [])
                 for job in job_list:
-                    processed_job = process_source_jobicy(job, subdir_date)
+                    processed_job = process_source_jobicy(job, subdir_date, category_part)
                     processed_data.append(processed_job)
 
     return processed_data

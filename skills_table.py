@@ -2,7 +2,7 @@ import pandas as pd
 import json
 
 # Leer el archivo JSON
-with open("output_data/joined_data.json", 'r', encoding='utf-8') as f:
+with open("output_data/joined_data_mapped.json", 'r', encoding='utf-8') as f:
     data = json.load(f)
 
 # Convertir el JSON a un DataFrame
