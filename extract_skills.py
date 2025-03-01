@@ -55,7 +55,6 @@ def process_source_indeed(job, date, country, role):
         "source": "indeed"
     }
 
-# Procesador para datos históricos de la API de Remotive
 def process_source_remotive_historic(job, subdir_date):
     title = job.get("title", "")
     company = job.get("company_name", "Empresa no especificada")
@@ -85,7 +84,6 @@ def process_source_remotive_historic(job, subdir_date):
         "source": "remotive"
     }
 
-# Procesador para el feed RSS de Remotive
 def process_source_remotive(job, subdir_date):
     title = job.get("title", "")
     company = job.get("company", "Empresa no especificada")
@@ -186,31 +184,47 @@ def process_source_weworkremotely(job, subdir_date):
     }
 
 def process_source_jobicy(job, subdir_date):
-    title = job.get("name", "").replace("Remote ", "", 1) if job.get("name", "").startswith("Remote ") else job.get("name", "")
-    company = job.get("company", "Empresa no especificada")
-    description = job.get("description", "")
+    title = job.get("jobTitle", "").replace("Remote ", "", 1) if job.get("jobTitle", "").startswith("Remote ") else job.get("jobTitle", "")
+    company = job.get("companyName", "Empresa no especificada")
+    description = job.get("jobDescription", "")
     salary = "No especificado"
-    employment_type = job.get("jobtype", "No especificado").replace("-", " ").title()
+    if job.get("annualSalaryMin") and job.get("annualSalaryMax") and job.get("salaryCurrency"):
+        salary = f"{job['salaryCurrency']} {job['annualSalaryMin']} - {job['annualSalaryMax']}"
+    employment_type = job.get("jobType", ["No especificado"])[0].replace("-", " ").title()
     technologies = extract_technologies(description)
-    job_id = generate_job_id(description)
-    location = job.get("region", "Ubicación no especificada")
-    role = "Desconocido"
-    date = job.get("pubdate", subdir_date)
+    job_id = str(job.get("id", generate_job_id(description)))  # Usar ID de la API si existe
+    location = job.get("jobGeo", "Ubicación no especificada")
+    role = "Desconocido"  # Jobicy API no proporciona category directamente, lo inferimos del título
+    date = job.get("pubDate", subdir_date)
     try:
-        date_obj = datetime.strptime(date, "%d.%m.%Y")
+        date_obj = datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
         date = date_obj.strftime("%Y-%m-%d")
     except ValueError:
         date = subdir_date
     country = location if any(c in location.lower() for c in ["colombia", "india", "us"]) else location
 
-    if "salary for this role is between" in description.lower():
-        salary_start = description.lower().find("salary for this role is between")
-        salary_text = description[salary_start:salary_start+100]
-        salary = salary_text.split("plus")[0].strip().replace("salary for this role is between ", "")
-    elif "$" in description:
-        salary_match = re.search(r'\$[\d,]+(?:\s*[-–]\s*\$[\d,]+)?', description)
-        if salary_match:
-            salary = salary_match.group(0)
+    # Inferir rol del título
+    title_lower = title.lower()
+    if "analyst" in title_lower or "data" in title_lower:
+        role = "Data Science"
+    elif "engineer" in title_lower or "devops" in title_lower:
+        role = "DevOps Engineer"
+    elif "developer" in title_lower or "software" in title_lower or "programmer" in title_lower:
+        role = "Software Developer"
+    elif "design" in title_lower or "ux" in title_lower or "ui" in title_lower:
+        role = "Designer"
+    elif "qa" in title_lower or "quality" in title_lower:
+        role = "QA Engineer"
+    elif "manager" in title_lower or "project" in title_lower:
+        role = "Product Manager"
+    elif "support" in title_lower or "customer" in title_lower:
+        role = "Customer Support"
+    elif "marketing" in title_lower or "sales" in title_lower:
+        role = "Sales"
+    elif "writer" in title_lower or "content" in title_lower:
+        role = "Writer"
+    else:
+        role = "Other"
 
     return {
         "job_id": job_id,
@@ -326,7 +340,7 @@ def process_json_files(directory):
                     processed_job = process_source_weworkremotely(job, subdir_date)
                     processed_data.append(processed_job)
 
-    # Procesar Jobicy
+    # Procesar Jobicy (actualizado para API)
     jobicy_path = os.path.join(directory, 'jobicy')
     if os.path.exists(jobicy_path):
         for file_name in os.listdir(jobicy_path):
@@ -339,7 +353,9 @@ def process_json_files(directory):
                     print(f"Error con {file_path}: {e}")
                     continue
                 subdir_date = file_name.split('_')[0]
-                for job in data:
+                # La API devuelve un objeto con "jobs"
+                job_list = data.get("jobs", [])
+                for job in job_list:
                     processed_job = process_source_jobicy(job, subdir_date)
                     processed_data.append(processed_job)
 
