@@ -218,6 +218,39 @@ def process_source_jobicy(job, subdir_date, category_from_file=None):
         "source": "jobicy"
     }
 
+def process_source_jobscollider(job, subdir_date):
+    title = job.get("title", "")
+    company = job.get("company", "Empresa no especificada")
+    description = job.get("description", "")
+    salary = "No especificado"
+    employment_type = job.get("type", "No especificado").replace("_", " ").title()
+    technologies = extract_technologies(description)
+    job_id = generate_job_id(description)
+    location = job.get("region", "Ubicación no especificada")
+    role = job.get("category", "Rol no especificado")
+    date = job.get("pubDate", subdir_date)
+    try:
+        date_obj = datetime.strptime(date, "%a, %d %b %Y %H:%M:%S %z")
+        date = date_obj.strftime("%Y-%m-%d")
+    except ValueError:
+        date = subdir_date
+    country = location if any(c in location.lower() for c in ["colombia", "india", "us"]) else location
+
+    return {
+        "job_id": job_id,
+        "title": title,
+        "company": company,
+        "location": location,
+        "skills": technologies,
+        "tags": [],
+        "salary": salary,
+        "employment_type": employment_type,
+        "date": date,
+        "country": country,
+        "role": role,
+        "source": "jobscollider"
+    }
+
 def process_json_files(directory):
     processed_data = []
     
@@ -334,6 +367,23 @@ def process_json_files(directory):
                 job_list = data.get("jobs", [])
                 for job in job_list:
                     processed_job = process_source_jobicy(job, subdir_date, category_part)
+                    processed_data.append(processed_job)
+
+    # Procesar JobsCollider
+    jobscollider_path = os.path.join(directory, 'jobscollider')
+    if os.path.exists(jobscollider_path):
+        for file_name in os.listdir(jobscollider_path):
+            if file_name.endswith('.json'):
+                file_path = os.path.join(jobscollider_path, file_name)
+                try:
+                    with open(file_path, 'r', encoding='utf-8') as f:
+                        data = json.load(f)
+                except (FileNotFoundError, json.JSONDecodeError) as e:
+                    print(f"Error con {file_path}: {e}")
+                    continue
+                subdir_date = file_name.split('_')[0]
+                for job in data:
+                    processed_job = process_source_jobscollider(job, subdir_date)
                     processed_data.append(processed_job)
 
     return processed_data
