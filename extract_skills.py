@@ -228,12 +228,13 @@ def process_source_jobscollider(job, subdir_date):
     job_id = generate_job_id(description)
     location = job.get("region", "Ubicación no especificada")
     role = job.get("category", "Rol no especificado")
-    date = job.get("pubDate", subdir_date)
-    try:
-        date_obj = datetime.strptime(date, "%a, %d %b %Y %H:%M:%S %z")
-        date = date_obj.strftime("%Y-%m-%d")
-    except ValueError:
-        date = subdir_date
+    pub_date = job.get("pubDate", subdir_date)  # Usamos el valor directamente
+
+    # Si pubDate no está en el formato esperado, usar la fecha del directorio
+    if not isinstance(pub_date, str) or len(pub_date) != 10 or pub_date[4] != '-' or pub_date[7] != '-':
+        print(f"Formato de fecha inválido: {pub_date}. Usando fecha del directorio: {subdir_date}")
+        pub_date = subdir_date
+
     country = location if any(c in location.lower() for c in ["colombia", "india", "us"]) else location
 
     return {
@@ -245,7 +246,7 @@ def process_source_jobscollider(job, subdir_date):
         "tags": [],
         "salary": salary,
         "employment_type": employment_type,
-        "date": date,
+        "date": pub_date,  # Usamos pub_date directamente
         "country": country,
         "role": role,
         "source": "jobscollider"

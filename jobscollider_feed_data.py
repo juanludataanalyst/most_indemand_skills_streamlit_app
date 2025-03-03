@@ -5,6 +5,7 @@ import xml.etree.ElementTree as ET
 import json
 import time
 import random
+from bs4 import BeautifulSoup
 
 def fetch_jobscollider_jobs(url, category_name):
     headers = {
@@ -21,21 +22,37 @@ def fetch_jobscollider_jobs(url, category_name):
     if response.status_code == 200:
         root = ET.fromstring(response.content)
         jobs = []
-        namespaces = {'media': 'http://search.yahoo.com/mrss/'}
+        namespaces = {'content': 'http://purl.org/rss/1.0/modules/content/'}
         
         for item in root.findall('.//item'):
             title = item.find('title').text if item.find('title') is not None else ""
             company = title.split(': ', 1)[0] if ': ' in title else "Empresa no especificada"
+            description = item.find('description').text if item.find('description') is not None else ""
+            pub_date = item.find('pubDate').text if item.find('pubDate') is not None else ""
+            link = item.find('link').text if item.find('link') is not None else ""
+            guid = item.find('guid').text if item.find('guid') is not None else ""
+
+            # Limpiar el HTML del campo description
+            cleaned_description = clean_html(description)
+
+            # Formatear la fecha
+            try:
+                date_obj = datetime.strptime(pub_date, "%a, %d %b %Y %H:%M:%S %z")
+                formatted_date = date_obj.strftime("%Y-%m-%d")
+            except ValueError:
+                formatted_date = datetime.now().strftime("%Y-%m-%d")
+
             job = {
                 "title": title,
                 "company": company,
-                "region": item.find('region').text if item.find('region') is not None else "Ubicación no especificada",
-                "category": item.find('category').text if item.find('category') is not None else "Rol no especificado",
-                "type": item.find('type').text if item.find('type') is not None else "No especificado",
-                "description": item.find('description').text if item.find('description') is not None else "",
-                "pubDate": item.find('pubDate').text if item.find('pubDate') is not None else "",
-                "link": item.find('link').text if item.find('link') is not None else "",
-                "media_content": item.find('media:content', namespaces).get('url') if item.find('media:content', namespaces) is not None else ""
+                "region": "Ubicación no especificada",  # Campo no existente, se asigna un valor por defecto
+                "category": category_name,  # Asignamos la categoría de la llamada a la API
+                "type": "No especificado",  # Campo no existente, se asigna un valor por defecto
+                "description": cleaned_description,
+                "pubDate": formatted_date,
+                "link": link,
+                "guid": guid,
+                "source": "jobscollider"
             }
             jobs.append(job)
         
@@ -46,13 +63,17 @@ def fetch_jobscollider_jobs(url, category_name):
         file_path = os.path.join(jc_dir, file_name)
         
         with open(file_path, "w", encoding="utf-8") as f:
-            json.dump(jobs, f, indent=4)
+            json.dump(jobs, f, indent=4, ensure_ascii=False)
         
         print(f"Datos guardados en: {file_path}. Total de trabajos: {len(jobs)}")
         return jobs
     else:
         print(f"Error: {response.status_code} para {url}")
         return None
+
+def clean_html(html_text):
+    soup = BeautifulSoup(html_text, 'html.parser')
+    return soup.get_text()
 
 def get_jobscollider_jobs():
     # Lista de feeds por categoría según la documentación de JobsCollider
@@ -74,7 +95,6 @@ def get_jobscollider_jobs():
         ("project_management", "https://jobscollider.com/remote-project-management-jobs.rss"),
         ("all_others", "https://jobscollider.com/remote-all-others-jobs.rss")
     ]
-    
     
     all_jobs = []
     for category_name, url in feeds:
