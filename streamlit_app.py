@@ -16,7 +16,7 @@ def download_file_from_drive(file_id):
         return None
 
 # Descargar datos principales (CSV)
-csv_file_id = '1BbXDXhT7CPh_Ihh8svcOYV2RTPYOLdxH'
+csv_file_id = '1zB4kNcj5sje2-jjT8yhuBURlLefHD9bP'
 csv_data = download_file_from_drive(csv_file_id)
 if csv_data:
     data = pd.read_csv(io.StringIO(csv_data))
