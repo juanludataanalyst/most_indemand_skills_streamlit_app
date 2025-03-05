@@ -257,9 +257,6 @@
     "Security Auditing": [
         "Security Auditing", "security auditing"
     ],
-"Customer Service": [
-        "Customer Service", "customer service", "Client Support", "client support", "Customer Care", "customer care"
-    ],
     "Technical Support": [
         "Technical Support", "technical support", "Tech Support", "tech support", "IT Support", "it support"
     ],
@@ -300,7 +297,7 @@
         "Financial Analysis", "financial analysis", "Finance Modeling", "finance modeling"
     ],
     "Accounting": [
-        "Accounting", "accounting", "Bookkeeping", "bookkeeping", "Financial Accounting", "financial accounting"
+        "Bookkeeping", "bookkeeping", "Financial Accounting", "financial accounting"
     ],
     "QuickBooks": [
         "QuickBooks", "quickbooks"
@@ -394,6 +391,215 @@
     ],
     "Creative Writing": [
         "Creative Writing", "creative writing", "Storytelling", "storytelling"
-    ]
-
-}
+    ],
+        "Machine Learning": [
+            "Machine Learning", "machine learning", "ML", "ml"
+        ],
+        "Deep Learning": [
+            "Deep Learning", "deep learning", "DL", "dl"
+        ],
+        "Neural Networks": [
+            "Neural Networks", "neural networks", "NN", "nn"
+        ],
+        "Natural Language Processing": [
+            "Natural Language Processing", "natural language processing", "NLP", "nlp"
+        ],
+        "Computer Vision": [
+            "Computer Vision", "computer vision", "CV", "cv"
+        ],
+        "TensorFlow": [
+            "TensorFlow", "tensorflow", "TF", "tf"
+        ],
+        "PyTorch": [
+            "PyTorch", "pytorch", "Torch", "torch"
+        ],
+        "Keras": [
+            "Keras", "keras"
+        ],
+        "Scikit-learn": [
+            "Scikit-learn", "scikit-learn", "Sklearn", "sklearn"
+        ],
+        "XGBoost": [
+            "XGBoost", "xgboost"
+        ],
+        "LightGBM": [
+            "LightGBM", "lightgbm"
+        ],
+        "CatBoost": [
+            "CatBoost", "catboost"
+        ],
+        "Reinforcement Learning": [
+            "Reinforcement Learning", "reinforcement learning", "RL", "rl"
+        ],
+        "Bayesian Inference": [
+            "Bayesian Inference", "bayesian inference"
+        ],
+        "Probabilistic Graphical Models": [
+            "Probabilistic Graphical Models", "probabilistic graphical models", "PGM", "pgm"
+        ],
+        "AutoML": [
+            "AutoML", "automl", "Automated Machine Learning", "automated machine learning"
+        ],
+        "Explainable AI": [
+            "Explainable AI", "explainable ai", "XAI", "xai"
+        ],
+        "Generative AI": [
+            "Generative AI", "generative ai"
+        ],
+        "Transformer Models": [
+            "Transformer Models", "transformer models", "Transformers", "transformers"
+        ],
+        "LLMs": [
+            "Large Language Models", "large language models", "LLMs", "llms","LLM","llm"
+        ],
+        "Hugging Face": [
+            "Hugging Face", "hugging face"
+        ],
+        "OpenAI": [
+            "OpenAI", "openai"
+        ],
+        "LangChain": [
+            "LangChain", "langchain"
+        ],
+        "Vector Databases": [
+            "Vector Databases", "vector databases"
+        ],
+        "FAISS": [
+            "FAISS", "faiss"
+        ],
+        "Pinecone": [
+            "Pinecone", "pinecone"
+        ],
+        "Milvus": [
+            "Milvus", "milvus"
+        ],
+        "MLOps": [
+            "MLOps", "mlops", "Machine Learning Operations", "machine learning operations"
+        ],
+        "Kubeflow": [
+            "Kubeflow", "kubeflow"
+        ],
+        "MLflow": [
+            "MLflow", "mlflow"
+        ],
+        "DataRobot": [
+            "DataRobot", "datarobot"
+        ],
+        "Feature Engineering": [
+            "Feature Engineering", "feature engineering"
+        ],
+        "Feature Selection": [
+            "Feature Selection", "feature selection"
+        ],
+        "Model Optimization": [
+            "Model Optimization", "model optimization"
+        ],
+        "Hyperparameter Tuning": [
+            "Hyperparameter Tuning", "hyperparameter tuning"
+        ],
+        "Optuna": [
+            "Optuna", "optuna"
+        ],
+        "GridSearchCV": [
+            "GridSearchCV", "gridsearchcv"
+        ],
+        "RandomizedSearchCV": [
+            "RandomizedSearchCV", "randomizedsearchcv"
+        ],
+        "Time Series Forecasting": [
+            "Time Series Forecasting", "time series forecasting"
+        ],
+        "ARIMA": [
+            "ARIMA", "arima"
+        ],
+        "Prophet": [
+            "Prophet", "prophet"
+        ],
+        "LSTMs": [
+            "LSTMs", "lstms", "Long Short-Term Memory", "long short-term memory"
+        ],
+        "GANs": [
+            "GANs", "gans", "Generative Adversarial Networks", "generative adversarial networks"
+        ],
+        "VAEs": [
+            "VAEs", "vaes", "Variational Autoencoders", "variational autoencoders"
+        ],
+        "Self-Supervised Learning": [
+            "Self-Supervised Learning", "self-supervised learning"
+        ],
+        "Semi-Supervised Learning": [
+            "Semi-Supervised Learning", "semi-supervised learning"
+        ],
+        "Zero-Shot Learning": [
+            "Zero-Shot Learning", "zero-shot learning"
+        ],
+        "Few-Shot Learning": [
+            "Few-Shot Learning", "few-shot learning"
+        ],
+        "Anomaly Detection": [
+            "Anomaly Detection", "anomaly detection"
+        ],
+        "Autoencoders": [
+            "Autoencoders", "autoencoders"
+        ],
+        "Speech Recognition": [
+            "Speech Recognition", "speech recognition"
+        ],
+        "Text-to-Speech": [
+            "Text-to-Speech", "text-to-speech", "TTS", "tts"
+        ],
+        "Speech-to-Text": [
+            "Speech-to-Text", "speech-to-text", "STT", "stt"
+        ],
+        "BERT": [
+            "BERT", "bert", "Bidirectional Encoder Representations from Transformers"
+        ],
+        "GPT": [
+            "GPT", "gpt", "Generative Pre-trained Transformer", "generative pre-trained transformer"
+        ],
+        "DALL-E": [
+            "DALL-E", "dall-e"
+        ],
+        "Stable Diffusion": [
+            "Stable Diffusion", "stable diffusion"
+        ],
+        "CLIP": [
+            "CLIP", "clip"
+        ],
+        "Whisper": [
+            "Whisper", "whisper"
+        ],
+        "T5": [
+            "T5", "t5", "Text-to-Text Transfer Transformer", "text-to-text transfer transformer"
+        ],
+        "ResNet": [
+            "ResNet", "resnet"
+        ],
+        "EfficientNet": [
+            "EfficientNet", "efficientnet"
+        ],
+        "YOLO": [
+            "YOLO", "yolo", "You Only Look Once", "you only look once"
+        ],
+        "OpenCV": [
+            "OpenCV", "opencv"
+        ],
+        "Image Segmentation": [
+            "Image Segmentation", "image segmentation"
+        ],
+        "Object Detection": [
+            "Object Detection", "object detection"
+        ],
+        "Graph Neural Networks": [
+            "Graph Neural Networks", "graph neural networks", "GNN", "gnn"
+        ],
+        "Federated Learning": [
+            "Federated Learning", "federated learning"
+        ],
+        "Edge AI": [
+            "Edge AI", "edge ai"
+        ],
+        "Quantum Machine Learning": [
+            "Quantum Machine Learning", "quantum machine learning", "QML", "qml"
+        ]
+    }
