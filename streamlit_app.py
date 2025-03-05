@@ -42,7 +42,10 @@ if selected == "Skills by Role":
         roles = data['role'].unique()
         selected_role = st.selectbox("Select a role:", roles)
         
-        countries = ['All'] + data['country'].unique().tolist()
+        # Obtengo todos los países y elimino Colombia de la lista
+        all_countries = data['country'].unique().tolist()
+        all_countries = [country for country in all_countries if country != 'Colombia']
+        countries = ['All'] + all_countries
         selected_country = st.selectbox("Select a country:", countries)
 
         # Filtrar datos según selección
